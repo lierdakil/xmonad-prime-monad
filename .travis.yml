@@ -33,7 +33,7 @@ before_install:
 install:
  # build xmonad from HEAD
  - git clone https://github.com/xmonad/xmonad.git
- - git clone https://github.com/xmonad-contrib/xmonad.git
+ - git clone https://github.com/xmonad/xmonad-contrib.git
 
  - cabal --version
  - echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
