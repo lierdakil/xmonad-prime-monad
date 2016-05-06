@@ -1,4 +1,3 @@
-{-# LANGUAGE AllowAmbiguousTypes       #-}
 {-# LANGUAGE ConstraintKinds           #-}
 {-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE FlexibleContexts          #-}
@@ -331,7 +330,7 @@ instance (IsLayout l a) => CC (XMonad.Layout.LayoutCombinators.NewSelect l) a wh
 instance (IsLayout l a, Show a, Eq a, Read b, Read a, Show b, Typeable a, XMonad.Layout.LayoutBuilderP.Predicate b a) => CC (XMonad.Layout.LayoutBuilderP.LayoutP b l) a where dict _ = Dict
 instance (Eq a, Read a, Show a, Typeable a, IsLayout l a) => CC (XMonad.Layout.LayoutBuilder.LayoutN l) a where dict _ = Dict
 instance (IsLayout l a) => CC (XMonad.Layout.IfMax.IfMax l) a where dict _ = Dict
-instance (IsLayout l (), IsLayout l1 Window, IsLayout l2 Window)
+instance (IsLayout l (), IsLayout l1 Window)
       => CC (XMonad.Layout.ComboP.CombineTwoP (l ()) l1) Window where dict _ = Dict
 instance (IsLayout l (), IsLayout l1 a, Read a, Show a, Eq a, Typeable a)
       => CC (XMonad.Layout.Combo.CombineTwo (l ()) l1) a where dict _ = Dict
@@ -688,7 +687,7 @@ wsSetName index newName = wsNames =. zipWith (curry maybeSet) [0..]
 --
 -- This will add the necessary keybindings to 'keys'. Note that it won't remove
 -- old keybindings; it's just not that clever.
-withScreens :: IsLayout l Window => Arr ScreenConfig -> Prime
+withScreens :: Arr ScreenConfig -> Prime
 withScreens sarr = execArr sarr >>= sprime
   where sprime :: ScreenConfig -> Prime
         sprime sconf =
