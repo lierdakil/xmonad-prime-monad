@@ -32,8 +32,8 @@ before_install:
 
 install:
  # build xmonad from HEAD
- - git clone https://github.com/xmonad/xmonad.git
- - git clone https://github.com/xmonad/xmonad-contrib.git
+ # - git clone https://github.com/xmonad/xmonad.git
+ # - git clone https://github.com/xmonad/xmonad-contrib.git
 
  - cabal --version
  - echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
@@ -70,8 +70,8 @@ install:
       cp -a $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin installplan.txt $HOME/.cabsnap/;
    fi
 
- - cabal install xmonad/
- - cabal install xmonad-contrib/
+ # - cabal install xmonad/
+ # - cabal install xmonad-contrib/
 
 # Here starts the actual work to be performed for the package under test;
 # any command which exits with a non-zero exit code causes the build to fail.
