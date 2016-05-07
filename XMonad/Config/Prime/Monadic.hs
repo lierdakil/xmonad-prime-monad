@@ -264,6 +264,11 @@ class S f t | f -> t where
   -- > modifyLayout $ squash $ myLayoutFunction
   squash :: (l a -> f a) -> (l a -> t a)
 
+instance {-# INCOHERENT #-} S t t where
+  squash = id
+instance S ((f :. g) l') t => S (f (g l')) t where
+  squash = squash . (O .)
+
 -- | Same as 'squash', but acts on XConfig. Use with 'apply''.
 --
 -- Example:
@@ -286,11 +291,6 @@ squashXC f xc@XConfig{X.layoutHook = l} =
 -- > applyIO $ squashIO $ myLayoutFunction
 squashIO :: S f t => (XConfig l -> IO (XConfig f)) -> XConfig l -> IO (XConfig t)
 squashIO f xc = flip squashXC xc . const <$> f xc
-
-instance {-# INCOHERENT #-} S t t where
-  squash = id
-instance S ((f :. g) l') t => S (f (g l')) t where
-  squash = squash . (O .)
 
 ---
 --- Instances for composed layouts
