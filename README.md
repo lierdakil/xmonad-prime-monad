@@ -1,7 +1,7 @@
+# xmonad-prime-monad-0.1.0.0: True monadic config for XMonad [![Build Status](https://travis-ci.org/lierdakil/xmonad-prime-monad.svg?branch=master)](https://travis-ci.org/lierdakil/xmonad-prime-monad)
+
 -   [Contents](index.html)
 -   [Index](doc-index.html)
-
-xmonad-prime-monad-0.1.0.0: True monadic config for XMonad
 
 |              |                                          |
 |:-------------|:-----------------------------------------|
