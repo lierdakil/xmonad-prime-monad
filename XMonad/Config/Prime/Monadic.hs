@@ -113,6 +113,7 @@ squashIO,
 -- | Everything you know and love from the core "XMonad" module is available
 -- for use in your config file, too.
 module XMonad,
+lift,
 
 -- * Core
 -- | These are the building blocks on which the config language is built.
