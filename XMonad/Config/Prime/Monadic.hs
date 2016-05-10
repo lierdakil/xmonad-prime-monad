@@ -234,12 +234,12 @@ wrapLT m (Layout la) = Layout (m la) \\ cc (m la)
 wrapXC :: (CC m Window)
        => (forall l. (LayoutClass l Window) => XConfig l -> XConfig (m l))
        -> XConfig Layout -> XConfig Layout
-wrapXC f xc = runIdentity (wrapXCIO (return . f) xc)
+wrapXC f xc = runIdentity (wrapXCM (return . f) xc)
 
-wrapXCIO :: (CC m Window, Monad io)
-       => (forall l. (LayoutClass l Window) => XConfig l -> io (XConfig (m l)))
-       -> XConfig Layout -> io (XConfig Layout)
-wrapXCIO m xc@XConfig{X.layoutHook = Layout la} =
+wrapXCM :: (CC m Window, Monad mnd)
+       => (forall l. (LayoutClass l Window) => XConfig l -> mnd (XConfig (m l)))
+       -> XConfig Layout -> mnd (XConfig Layout)
+wrapXCM m xc@XConfig{X.layoutHook = Layout la} =
   let oldconfig = xc{X.layoutHook = la}
   in do
     newconfig <- m oldconfig
@@ -841,7 +841,7 @@ applyIO f = get >>= lift . f >>= put
 --
 -- > applyIO' $ squashIO myFunction
 applyIO' :: (CC m Window) => (forall l. (LayoutClass l Window) => XConfig l -> IO (XConfig (m l))) -> Prime
-applyIO' f = applyIO (wrapXCIO f)
+applyIO' f = applyIO (wrapXCM f)
 
 -- $example
 -- As an example, I've included below a subset of my current config. Note that
