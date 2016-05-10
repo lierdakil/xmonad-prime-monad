@@ -133,6 +133,7 @@ Dict(Dict),
 import           Control.Arrow                          (first, second)
 import           Control.Applicative                    ((<$>))
 import           Control.Monad.State
+import           Control.Monad.Identity
 import           Data.Monoid                            (All)
 import           Prelude                                hiding (mod)
 
@@ -232,14 +233,11 @@ wrapLT m (Layout la) = Layout (m la) \\ cc (m la)
 wrapXC :: (CC m Window)
        => (forall l. (LayoutClass l Window) => XConfig l -> XConfig (m l))
        -> XConfig Layout -> XConfig Layout
-wrapXC m xc@XConfig{X.layoutHook = Layout la} =
-  let oldconfig = xc{X.layoutHook = la}
-      newconfig = m oldconfig
-  in newconfig{X.layoutHook = Layout $ X.layoutHook newconfig} \\ cc (X.layoutHook newconfig)
+wrapXC f xc = runIdentity (wrapXCIO (return . f) xc)
 
-wrapXCIO :: (CC m Window)
-       => (forall l. (LayoutClass l Window) => XConfig l -> IO (XConfig (m l)))
-       -> XConfig Layout -> IO (XConfig Layout)
+wrapXCIO :: (CC m Window, Monad io)
+       => (forall l. (LayoutClass l Window) => XConfig l -> io (XConfig (m l)))
+       -> XConfig Layout -> io (XConfig Layout)
 wrapXCIO m xc@XConfig{X.layoutHook = Layout la} =
   let oldconfig = xc{X.layoutHook = la}
   in do
